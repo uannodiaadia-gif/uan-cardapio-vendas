@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UAN Cardápio Pro — Cardápios de 6 semanas em segundos</title>
+<style>
+  :root{
+    --verde900:#0B3D2E; --verde800:#0F4D36; --verde700:#145C42; --verde500:#1D9E75;
+    --verde300:#9ECFB4; --ouro:#C8A847; --ouro-claro:#E5C76A; --creme:#FAFAF7;
+    --tinta:#10231C; --cinza:#5b6b63; --linha:#e4e7e3;
+    --grad:linear-gradient(135deg,#0B3D2E 0%,#0F4D36 55%,#082A1F 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;color:var(--tinta);background:var(--creme);line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+  .btn{display:inline-block;background:var(--ouro);color:#06281d;font-weight:800;font-size:18px;
+    padding:16px 34px;border-radius:40px;text-decoration:none;box-shadow:0 8px 24px rgba(200,168,71,.35);
+    transition:transform .15s ease, box-shadow .15s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(200,168,71,.45)}
+  .eyebrow{font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro-claro)}
+  section{padding:70px 0}
+  h2{font-size:34px;font-weight:900;color:var(--verde900);line-height:1.15;margin-bottom:14px}
+  .sub{font-size:17px;color:var(--cinza);max-width:680px}
+
+  /* HERO */
+  .hero{background:var(--grad);color:#fff;padding:30px 0 80px;overflow:hidden;position:relative}
+  .hero::after{content:"";position:absolute;right:-120px;top:-80px;width:360px;height:360px;
+    border:2px dashed rgba(29,158,117,.45);border-radius:50%}
+  .nav{display:flex;align-items:center;gap:12px;padding:18px 0}
+  .nav .logo{width:42px;height:42px;flex:none}
+  .nav b{font-size:18px;font-weight:900;letter-spacing:.02em}
+  .nav b span{color:var(--ouro-claro)}
+  .ribbon{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(158,207,180,.4);
+    color:#eafff5;font-size:13px;font-weight:700;padding:6px 14px;border-radius:30px;margin-bottom:18px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative;z-index:1}
+  .hero h1{font-size:48px;font-weight:900;line-height:1.08;margin-bottom:18px}
+  .hero h1 span{color:var(--ouro-claro)}
+  .hero p.lead{font-size:19px;color:var(--verde300);margin-bottom:28px;max-width:520px}
+  .hero .micro{margin-top:14px;font-size:13px;color:var(--verde300)}
+  .mock{background:#fff;border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.4);overflow:hidden}
+  .mock .bar{height:44px;background:var(--verde800);display:flex;align-items:center;gap:6px;padding:0 14px}
+  .mock .bar i{width:9px;height:9px;border-radius:50%;background:var(--ouro-claro);display:inline-block}
+  .mock .bar b{color:#fff;font-size:13px;margin-left:8px;font-weight:700}
+  .mock .row{display:flex;justify-content:space-between;padding:11px 14px;font-size:13.5px;border-top:1px solid #eef1ee}
+  .mock .row:nth-child(even){background:#f4f6f4}
+  .mock .row .d{font-weight:800;color:var(--verde900)}
+  .mock .row .ok{color:var(--verde500);font-weight:800}
+  .mock .foot{background:var(--verde900);color:var(--ouro-claro);font-weight:800;padding:11px 14px;font-size:13.5px;display:flex;justify-content:space-between}
+  .mock .foot span{color:#fff}
+
+  /* DOR */
+  .dor{background:#fff}
+  .dor ul{list-style:none;margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .dor li{display:flex;gap:12px;align-items:flex-start;font-size:16px;background:var(--creme);
+    border:1px solid var(--linha);border-radius:12px;padding:16px 18px}
+  .dor li .x{color:#c0532f;font-weight:900;font-size:18px;flex:none}
+  .dor .punch{margin-top:26px;font-size:22px;font-weight:900;color:var(--verde900);text-align:center}
+  .dor .punch span{color:var(--ouro)}
+
+  /* PASSOS */
+  .passos{background:var(--creme)}
+  .passos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .passo{background:#fff;border:1px solid var(--linha);border-radius:16px;padding:26px 22px}
+  .passo .n{width:42px;height:42px;border-radius:12px;background:var(--grad);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;margin-bottom:14px}
+  .passo h3{font-size:18px;color:var(--verde900);font-weight:800;margin-bottom:6px}
+  .passo p{font-size:14.5px;color:var(--cinza)}
+
+  /* RECURSOS */
+  .recursos{background:#fff}
+  .rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+  .rec{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--linha);border-radius:14px;padding:18px 20px;background:var(--creme)}
+  .rec .ic{font-size:26px;flex:none;line-height:1}
+  .rec b{display:block;color:var(--verde900);font-size:16px;margin-bottom:3px}
+  .rec p{font-size:14px;color:var(--cinza)}
+
+  /* PROVA */
+  .prova{background:var(--verde900);color:#fff}
+  .prova h2{color:#fff}
+  .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+  .dep{background:rgba(255,255,255,.06);border:1px solid rgba(158,207,180,.25);border-radius:14px;padding:22px}
+  .dep p{font-size:15.5px;color:#eafff5;font-style:italic;margin-bottom:12px}
+  .dep .who{font-size:13.5px;color:var(--ouro-claro);font-weight:700}
+
+  /* CRIADOR */
+  .criador{background:var(--creme)}
+  .criador-box{display:flex;gap:22px;align-items:center;background:#fff;border:1px solid var(--linha);border-radius:18px;padding:28px}
+  .criador-box .av{width:84px;height:84px;border-radius:50%;background:var(--grad);flex:none;display:flex;align-items:center;justify-content:center;color:var(--ouro-claro);font-weight:900;font-size:26px}
+  .criador-box p{font-size:16px;color:var(--cinza)}
+  .criador-box b{color:var(--verde900)}
+
+  /* OFERTA */
+  .oferta{background:var(--grad);color:#fff;text-align:center}
+  .oferta h2{color:#fff}
+  .preco-card{background:#fff;color:var(--tinta);max-width:460px;margin:30px auto 0;border-radius:20px;padding:34px 30px;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+  .preco-card .de{color:var(--cinza);text-decoration:line-through;font-size:18px}
+  .preco-card .por{font-size:46px;font-weight:900;color:var(--verde900);line-height:1.1;margin:4px 0}
+  .preco-card .por span{font-size:18px;color:var(--cinza)}
+  .preco-card .parc{font-size:15px;color:var(--cinza);margin-bottom:8px}
+  .preco-card .assina{font-size:13px;color:var(--ouro);font-weight:800;background:#FBF5E2;border-radius:8px;padding:8px 12px;margin:14px 0;display:inline-block}
+  .preco-card ul{list-style:none;text-align:left;margin:18px 0 22px}
+  .preco-card li{font-size:15px;padding:6px 0;color:var(--tinta)}
+  .preco-card li::before{content:"✓ ";color:var(--verde500);font-weight:900}
+  .garantia{margin-top:22px;font-size:14px;color:var(--verde300)}
+
+  /* FAQ */
+  .faq{background:#fff}
+  .faq-item{border-bottom:1px solid var(--linha);padding:18px 0}
+  .faq-item h4{font-size:17px;color:var(--verde900);font-weight:800;margin-bottom:6px}
+  .faq-item p{font-size:15px;color:var(--cinza)}
+
+  /* FINAL */
+  .final{background:var(--creme);text-align:center}
+  .final h2{margin-bottom:22px}
+  footer{background:var(--verde900);color:var(--verde300);text-align:center;padding:30px 22px;font-size:13px}
+
+  @media (max-width:820px){
+    .hero-grid,.dor ul,.passos-grid,.rec-grid,.dep-grid{grid-template-columns:1fr}
+    .hero h1{font-size:36px} h2{font-size:27px}
+    .criador-box{flex-direction:column;text-align:center}
+    section{padding:50px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="nav">
+      <svg class="logo" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(150,150)">
+          <circle r="118" fill="none" stroke="#1D9E75" stroke-width="3" stroke-dasharray="4 6" opacity=".7"/>
+          <g fill="#C8A847"><circle cx="0" cy="-118" r="6"/><circle cx="102" cy="-59" r="6"/><circle cx="102" cy="59" r="6"/><circle cx="0" cy="118" r="6"/><circle cx="-102" cy="59" r="6"/><circle cx="-102" cy="-59" r="6"/></g>
+          <polygon points="0,-78 67,-39 67,39 0,78 -67,39 -67,-39" fill="#0F5A40" stroke="#C8A847" stroke-width="4"/>
+          <g stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"><path d="M -27 -27 L -27 23 Q -27 36 -13 36 L 13 36 Q 27 36 27 23 L 27 -27"/><line x1="0" y1="-8" x2="-16" y2="-22"/><line x1="0" y1="-8" x2="16" y2="-22"/></g>
+          <circle cx="0" cy="-8" r="6" fill="#C8A847"/>
+        </g>
+      </svg>
+      <b>UAN CARDÁPIO <span>PRO</span></b>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <span class="ribbon">🚀 Em breve · entre na lista de espera</span>
+        <h1>Seu fim de semana <span>de volta.</span></h1>
+        <p class="lead">Cardápios de UAN de 6 semanas — prontos, harmônicos e dentro do custo. Em 1 clique. Pare de montar cardápio na planilha: o sistema gera o ciclo completo, equilibra a nutrição e já entrega a lista de compras.</p>
+        <a class="btn" href="#" onclick="abrirEspera(event)">Quero ser avisada no lançamento</a>
+        <p class="micro">Feito por nutricionista de UAN · Osmar Almeida · CRN 12979</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="bar"><i></i><b>Cardápio · 6 semanas</b></div>
+        <div class="row"><span class="d">Segunda</span><span>Bife · arroz · feijão · salada <span class="ok">✓</span></span></div>
+        <div class="row"><span class="d">Terça</span><span>Frango · purê · beterraba <span class="ok">✓</span></span></div>
+        <div class="row"><span class="d">Quarta</span><span>Peixe · legumes · tomate <span class="ok">✓</span></span></div>
+        <div class="row"><span class="d">Quinta</span><span>Carne moída · macarrão <span class="ok">✓</span></span></div>
+        <div class="row"><span class="d">Sexta</span><span>Costela · mandioca · couve <span class="ok">✓</span></span></div>
+        <div class="foot"><span>Custo médio: R$ 9,12</span><span>15 segundos ⚡</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== DOR ===== -->
+<section class="dor">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--ouro)">Você reconhece isto?</span>
+    <h2>Montar cardápio não devia tomar seu dia inteiro</h2>
+    <ul>
+      <li><span class="x">✕</span> Horas — às vezes o fim de semana inteiro — montando cardápio na mão</li>
+      <li><span class="x">✕</span> Recalcular nutrição e custo a cada troca de prato</li>
+      <li><span class="x">✕</span> Refazer a lista de compras toda semana</li>
+      <li><span class="x">✕</span> Medo de repetir proteína ou montar um dia sem harmonia</li>
+    </ul>
+    <p class="punch">Não é falta de competência. É falta de <span>ferramenta.</span></p>
+  </div>
+</section>
+
+<!-- ===== PASSOS ===== -->
+<section class="passos">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--ouro)">Simples assim</span>
+    <h2>Do zero ao cardápio em 3 passos</h2>
+    <div class="passos-grid">
+      <div class="passo"><div class="n">1</div><h3>Configure uma vez</h3><p>Tipo de UAN, comensais, metas de custo e calorias, frequências contratuais. O sistema guarda tudo.</p></div>
+      <div class="passo"><div class="n">2</div><h3>Clique em Gerar</h3><p>6 semanas completas montadas em segundos, respeitando as suas regras.</p></div>
+      <div class="passo"><div class="n">3</div><h3>Ajuste e entregue</h3><p>Troque um prato com 1 clique e exporte o PDF profissional com o seu CRN.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RECURSOS ===== -->
+<section class="recursos">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--ouro)">Tudo num só lugar</span>
+    <h2>O que você recebe</h2>
+    <div class="rec-grid">
+      <div class="rec"><span class="ic">🍽️</span><div><b>Motor de harmonia (método AQPC)</b><p>Combina sabores, cores e texturas. Nada de combinações estranhas — cada dia ganha selo de qualidade.</p></div></div>
+      <div class="rec"><span class="ic">💰</span><div><b>Custo sob controle</b><p>95 a 100% de aderência à sua meta de custo por refeição.</p></div></div>
+      <div class="rec"><span class="ic">🛒</span><div><b>Lista de compras profissional</b><p>Por fornecedor, em embalagens reais, com margem de segurança e desconto de estoque.</p></div></div>
+      <div class="rec"><span class="ic">📋</span><div><b>Ficha técnica de cada prato</b><p>Ingredientes, gramagem, modo de preparo e custo — exportável em PDF.</p></div></div>
+      <div class="rec"><span class="ic">📊</span><div><b>Análise nutricional TACO</b><p>Painel com indicadores, gráficos de custo e mapa de qualidade das 6 semanas.</p></div></div>
+      <div class="rec"><span class="ic">🌙</span><div><b>Almoço, jantar e terapêuticos</b><p>Jantar completo configurável e cardápios para diabético, hipertenso e mais.</p></div></div>
+      <div class="rec"><span class="ic">🔒</span><div><b>100% offline + backup automático</b><p>Funciona sem internet e protege seus dados com cópias diárias.</p></div></div>
+      <div class="rec"><span class="ic">🔄</span><div><b>Atualizações automáticas</b><p>Melhorias chegam sozinhas no seu programa, sem você reinstalar nada.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROVA SOCIAL ===== -->
+<section class="prova">
+  <div class="wrap">
+    <span class="eyebrow">Quem já testou</span>
+    <h2>Nutricionistas aprovando</h2>
+    <div class="dep-grid">
+      <div class="dep"><p>"O que levava meu sábado inteiro agora são segundos."</p><div class="who">— Camila</div></div>
+      <div class="dep"><p>"A lista de compras por fornecedor mudou a minha rotina de pedidos."</p><div class="who">— Patrícia</div></div>
+      <div class="dep"><p>"Finalmente um cardápio que faz sentido no prato e no orçamento."</p><div class="who">— Renata</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CRIADOR ===== -->
+<section class="criador">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--ouro)">Quem está por trás</span>
+    <h2>Feito por quem vive a UAN</h2>
+    <div class="criador-box">
+      <div class="av">OA</div>
+      <p>Sou <b>Osmar Almeida</b>, nutricionista (CRN 12979). Desenvolvi o UAN Cardápio Pro a partir da minha própria rotina em Unidades de Alimentação e Nutrição. Cada regra dentro dele nasceu de um problema real de quem monta cardápio de verdade — não de teoria.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OFERTA ===== -->
+<section class="oferta" id="oferta">
+  <div class="wrap">
+    <span class="eyebrow">A oferta</span>
+    <h2>Garanta o preço de lançamento</h2>
+    <p class="sub" style="color:var(--verde300);margin:0 auto">Assinatura anual com tudo incluído. Use o cupom <b style="color:var(--ouro-claro)">UANPRO20</b> e ganhe 20% de desconto no lançamento.</p>
+    <div class="preco-card">
+      <div class="de">de R$ 397/ano</div>
+      <div class="por">R$ 317,60<span>/ano</span></div>
+      <div class="parc">ou 12× de R$ 26,47 · 20% OFF</div>
+      <div class="assina" style="background:#0F4D36;color:var(--ouro-claro)">🎟️ Cupom de lançamento: <b>UANPRO20</b> — 20% OFF</div>
+      <div class="assina">📅 Assinatura anual · renovação a cada 12 meses</div>
+      <ul>
+        <li>Acesso completo por 12 meses</li>
+        <li>Atualizações automáticas incluídas</li>
+        <li>Suporte direto com o criador</li>
+      </ul>
+      <a class="btn" href="#" style="display:block" onclick="abrirEspera(event)">Quero ser avisada no lançamento</a>
+    </div>
+    <p class="garantia">🛡️ Garantia incondicional de 7 dias. Não amou? Devolvemos 100%.</p>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--ouro)">Dúvidas</span>
+    <h2>Perguntas frequentes</h2>
+    <div class="faq-item"><h4>É mensalidade?</h4><p>Não. É uma assinatura anual: você paga uma vez por 12 meses de uso e renova a cada ano. Pode parcelar em até 12×.</p></div>
+    <div class="faq-item"><h4>Preciso de internet?</h4><p>Só para baixar e receber atualizações. O uso do dia a dia é 100% offline.</p></div>
+    <div class="faq-item"><h4>Funciona em Mac?</h4><p>Hoje o programa roda em Windows.</p></div>
+    <div class="faq-item"><h4>Como recebo o programa?</h4><p>Após a compra, você recebe na área de membros o link do instalador e a sua chave de licença.</p></div>
+    <div class="faq-item"><h4>Meus dados ficam seguros?</h4><p>Sim. Tudo é salvo no seu computador com backup automático diário — você não perde nada ao trocar de versão.</p></div>
+  </div>
+</section>
+
+<!-- ===== FINAL ===== -->
+<section class="final">
+  <div class="wrap">
+    <h2>Seu próximo cardápio pode estar pronto<br>em 15 segundos.</h2>
+    <a class="btn" href="#" onclick="abrirEspera(event)">Entrar na lista de espera</a>
+  </div>
+</section>
+
+<footer>
+  UAN Cardápio Pro · Osmar Almeida — Nutricionista CRN 12979 · © 2026 · Todos os direitos reservados.
+</footer>
+
+<!-- ===== MODAL LISTA DE ESPERA ===== -->
+<div id="modalEspera" style="display:none;position:fixed;inset:0;background:rgba(11,61,46,.6);z-index:9999;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)fecharEspera()">
+  <div style="background:#fff;max-width:420px;width:100%;border-radius:20px;padding:34px 30px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+    <button onclick="fecharEspera()" aria-label="Fechar" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:26px;color:#9aa39d;cursor:pointer;line-height:1">×</button>
+    <div id="esperaForm">
+      <div style="font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ouro)">Lista de espera</div>
+      <h3 style="font-size:24px;font-weight:900;color:var(--verde900);margin:6px 0 6px">Quero ser avisada! 🎉</h3>
+      <p style="font-size:14.5px;color:var(--cinza);margin-bottom:20px">Deixe seu nome e e-mail. Avisamos você assim que o UAN Cardápio Pro entrar à venda — e o cupom <b style="color:var(--verde700)">UANPRO20</b> garante 20% OFF.</p>
+      <form id="formEspera">
+        <input name="name" type="text" required placeholder="Seu nome" autocomplete="name"
+          style="width:100%;padding:14px 16px;font-size:15px;border:1.5px solid var(--linha);border-radius:12px;margin-bottom:12px;outline:none;box-sizing:border-box" />
+        <input name="email" type="email" required placeholder="Seu melhor e-mail" autocomplete="email"
+          style="width:100%;padding:14px 16px;font-size:15px;border:1.5px solid var(--linha);border-radius:12px;margin-bottom:18px;outline:none;box-sizing:border-box" />
+        <button type="submit" id="btnEnviar"
+          style="width:100%;background:var(--ouro);color:#06281d;font-weight:800;font-size:17px;padding:15px;border:none;border-radius:40px;cursor:pointer;box-shadow:0 8px 24px rgba(200,168,71,.35)">Entrar na lista</button>
+      </form>
+      <p id="erroEspera" style="display:none;color:#c0392b;font-size:13.5px;margin-top:12px;text-align:center">Não foi possível enviar. Tente novamente.</p>
+      <p style="font-size:11.5px;color:#9aa39d;margin-top:14px;text-align:center">Seus dados são usados apenas para o aviso de lançamento.</p>
+    </div>
+    <div id="esperaOk" style="display:none;text-align:center;padding:14px 0">
+      <div style="font-size:54px;line-height:1">✅</div>
+      <h3 style="font-size:23px;font-weight:900;color:var(--verde900);margin:10px 0 8px">Você está na lista!</h3>
+      <p style="font-size:15px;color:var(--cinza)">Obrigado! Assim que abrir as vendas, você recebe um e-mail — já com o cupom <b style="color:var(--verde700)">UANPRO20</b>.</p>
+      <button onclick="fecharEspera()" style="margin-top:20px;background:var(--verde900);color:#fff;font-weight:800;font-size:15px;padding:12px 28px;border:none;border-radius:40px;cursor:pointer">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var EMAIL_DESTINO = "uannodiaadia@gmail.com"; // ← e-mail que recebe os leads
+  function abrirEspera(e){ if(e) e.preventDefault(); document.getElementById('modalEspera').style.display='flex'; }
+  function fecharEspera(){ document.getElementById('modalEspera').style.display='none'; }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') fecharEspera(); });
+  document.getElementById('formEspera').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var btn = document.getElementById('btnEnviar');
+    var erro = document.getElementById('erroEspera');
+    erro.style.display='none';
+    btn.disabled=true; btn.textContent='Enviando...';
+    var dados = {
+      name: this.name.value,
+      email: this.email.value,
+      _subject: 'Nova inscricao - Lista de espera UAN Cardapio Pro',
+      _captcha: 'false'
+    };
+    fetch('https://formsubmit.co/ajax/' + EMAIL_DESTINO, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(dados)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(){
+      document.getElementById('esperaForm').style.display='none';
+      document.getElementById('esperaOk').style.display='block';
+    })
+    .catch(function(){
+      erro.style.display='block';
+      btn.disabled=false; btn.textContent='Entrar na lista';
+    });
+  });
+</script>
+
+</body>
+</html>
