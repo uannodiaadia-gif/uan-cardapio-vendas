@@ -312,6 +312,9 @@
 
 <script>
   var EMAIL_DESTINO = "uannodiaadia@gmail.com"; // ← e-mail que recebe os leads
+  // ↓↓↓ COLE AQUI a URL do Apps Script da PLANILHA DE LEADS (termina em /exec).
+  //     Com a URL preenchida, cada cadastro também vira uma linha na planilha.
+  var URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxLGol4PEhQO-wCGx2JuRvea4rbY_YiIHxsG8O9MJQjVjaxqLEHltoXdCct5qoaG_Ep/exec";
   function abrirEspera(e){ if(e) e.preventDefault(); document.getElementById('modalEspera').style.display='flex'; }
   function fecharEspera(){ document.getElementById('modalEspera').style.display='none'; }
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') fecharEspera(); });
@@ -321,9 +324,20 @@
     var erro = document.getElementById('erroEspera');
     erro.style.display='none';
     btn.disabled=true; btn.textContent='Enviando...';
+    var nome = this.name.value, email = this.email.value;
+    // 1) Salva na planilha de leads (best-effort, não bloqueia o cadastro).
+    if (URL_PLANILHA) {
+      try {
+        fetch(URL_PLANILHA, {
+          method:'POST', mode:'no-cors',
+          body: JSON.stringify({ nome: nome, email: email, origem: 'lista-espera', data: new Date().toISOString() })
+        }).catch(function(){});
+      } catch(e){}
+    }
+    // 2) Envia o aviso por e-mail (FormSubmit) — confirma o sucesso na tela.
     var dados = {
-      name: this.name.value,
-      email: this.email.value,
+      name: nome,
+      email: email,
       _subject: 'Nova inscricao - Lista de espera UAN Cardapio Pro',
       _captcha: 'false'
     };
